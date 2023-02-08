@@ -11,15 +11,15 @@ The class assumes that both CSV files are built in spreadsheet style and contain
 ```
 This assumes that the content of both files contain "ID" cell. The position of the cell in each file however can be different.
 
-###Example:
-        **OLD_CSV                         NEW_CSV**
+**Example:**
 ```
+        OLD_CSV                         NEW_CSV
     "ID","Name","Age"               "ID","Name","Age"   
     "01","Alok","29"                "01","Alok","29"
     "02","Ganesh","30"              "03","Kundan","30"
 ```
 
-###JSON Output of the above example:
+**JSON Output of the above example:**
 ```
 {
     "author": "Alok Yadav",
@@ -48,7 +48,7 @@ This assumes that the content of both files contain "ID" cell. The position of t
 }
 ```
 
-###Summary Output of the above example:
+**Summary Output of the above example:**
 ```
 1 rows removed (50.00%)
 1 rows added (50.00%)
