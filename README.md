@@ -13,11 +13,13 @@ This assumes that the content of both files contain "ID" cell. The position of t
 
 ###Example:
         **OLD_CSV                         NEW_CSV**
-    "ID","Name","Age"               "ID","Name","Age"   
+<sub>    "ID","Name","Age"               "ID","Name","Age"   
     "01","Alok","29"                "01","Alok","29"
     "02","Ganesh","30"              "03","Kundan","30"
+</sub>
 
 ###JSON Output of the above example:
+<sub>
 {
     "author": "Alok Yadav",
     "version": "1.0.1",
@@ -43,11 +45,13 @@ This assumes that the content of both files contain "ID" cell. The position of t
     "columns_added": [],
     "columns_removed": []
 }
+</sub>
 
 ###Summary Output of the above example:
+<sub>
 1 rows removed (50.00%)
 1 rows added (50.00%)
 0 rows changed (0.00%)
 0 columns added (0.00%)
 0 columns removed (0.00%)
-
+</sub>
