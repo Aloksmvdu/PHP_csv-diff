@@ -232,6 +232,11 @@ class csv_diff {
 		$csv2_row_count = count($this->csv2_rows);
 		$primary_key_index = array_search($this->primary_key, $header1);
 
+		/*Get columns added in csv2*/
+		$this->get_columns_added($header1, $header2);
+		/*Get columns removed in csv2*/
+		$this->get_columns_removed($header1, $header2);
+
 		/*Get rows removed in csv2*/
 		//$this->get_rows_removed($primary_key_index, $csv1_row_count, $csv2_row_count);
 		/*Get rows changed in csv2*/
@@ -252,6 +257,6 @@ class csv_diff {
 	}
 }
 
-$diff = new csv_diff("1.csv", "2.csv", "ID");
-echo $diff->get_diff(PRINT_STYLE_SUMMARY);
+$diff = new csv_diff("1.csv", "2.csv", "Model");
+echo $diff->get_diff(PRINT_STYLE_JSON);
 ?>
