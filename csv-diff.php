@@ -257,8 +257,4 @@ class csv_diff {
 		return $this->ret;
 	}
 }
-
-header("Content-Type: application/json; charset=UTF-8");
-$diff = new csv_diff("old.csv", "new.csv", "ID");
-echo $diff->get_diff(PRINT_STYLE_JSON);
 ?>
