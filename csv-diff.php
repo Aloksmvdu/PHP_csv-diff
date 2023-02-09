@@ -4,7 +4,6 @@ Developer: Alok Yadav(info@alokyadav.in)
 */
 define('PRINT_STYLE_SUMMARY', 0);
 define('PRINT_STYLE_JSON', 1);
-define('PRINT_STYLE_CSV', 2);
 
 class csv_diff {
 	private $csv1;
@@ -44,18 +43,18 @@ class csv_diff {
 		try{
 			if(!file_exists($csv_file)){
 				$this->error = '['.$csv_file.']File not found.';
-    				throw new Exception('File not found.');
+    				throw new Exception('['.$csv_file.']File not found.');
   			}
 			$fp = fopen($csv_file, "r");
 			if(!$fp){
 				$this->error = '['.$csv_file.']File open failed.';
-    				throw new Exception('File open failed.');
+    				throw new Exception('['.$csv_file.']File open failed.');
   			}  
 			$header = fgetcsv($fp);
 			fclose($fp);
 		}catch(Exception $e){
 			$this->error = $e;
-  			throw new Exception('Unable to get header.');
+  			throw new Exception('['.$csv_file.']Unable to get header.');
 		} 
 		return $header;
 	}
@@ -162,12 +161,12 @@ class csv_diff {
 		try{
 			if(!file_exists($csv_file)){
 				$this->error = '['.$csv_file.']File not found.';
-    				throw new Exception('File not found.');
+    				throw new Exception('['.$csv_file.']File not found.');
   			}
 			$fp = fopen($csv_file, "r");
 			if(!$fp){
 				$this->error = '['.$csv_file.']File open failed.';
-    				throw new Exception('File open failed.');
+    				throw new Exception('['.$csv_file.']File open failed.');
   			}  
 			while (($data = fgetcsv($fp)) !== FALSE){
 				if($row_index == 0){
@@ -181,7 +180,7 @@ class csv_diff {
 			fclose($fp);
 		}catch(Exception $e){
 			$this->error = $e;
-  			throw new Exception('Unable to csv content.');
+  			throw new Exception('['.$csv_file.']Unable to load csv content');
 		} 
 		return $csv_rows;
 	}
@@ -238,7 +237,10 @@ class csv_diff {
 		$this->get_columns_removed($header1, $header2);
 
 		/*Get rows removed in csv2*/
-		//$this->get_rows_removed($primary_key_index, $csv1_row_count, $csv2_row_count);
+		/*
+		Disabled this get removed rows call as get_rows_changed can get both when fill_rows_removed parameter passed as true.
+		$this->get_rows_removed($primary_key_index, $csv1_row_count, $csv2_row_count);
+		*/
 		/*Get rows changed in csv2*/
 		$this->get_rows_changed($primary_key_index, $header1, $header2, $csv1_row_count, $csv2_row_count, $csv1_col_count, $csv2_col_count, true);
 		/*Get rows added in csv2*/
@@ -248,15 +250,15 @@ class csv_diff {
 		$this->result_json = $this->get_result_json();
 
 		if($this->style == PRINT_STYLE_JSON){
-			header("Content-Type: application/json; charset=UTF-8");
 			$this->ret = $this->result_json;
 		} else {
-			$this->ret = nl2br($this->result_summary);
+			$this->ret = $this->result_summary;
 		}
 		return $this->ret;
 	}
 }
 
-$diff = new csv_diff("1.csv", "2.csv", "Model");
+header("Content-Type: application/json; charset=UTF-8");
+$diff = new csv_diff("old.csv", "new.csv", "ID");
 echo $diff->get_diff(PRINT_STYLE_JSON);
 ?>
