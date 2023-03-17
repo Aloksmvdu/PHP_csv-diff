@@ -1,5 +1,5 @@
 <?php
-/*Last updated: 2023-02-05
+/*Last updated: 2023-03-17
 Developer: Alok Yadav(info@alokyadav.in)
 */
 define('PRINT_STYLE_SUMMARY', 0);
@@ -58,7 +58,18 @@ class csv_diff {
 		} 
 		return $header;
 	}
-
+	
+        private function get_changed_key_row_index($rows_changed, $key){
+                for($index = 0; $index < count($rows_changed); $index++){
+                        for($kindex = 0; $kindex < count($rows_changed[$index]["key"]); $kindex++){
+                                if(strcmp($rows_changed[$index]["key"][$kindex], $key) == 0){
+                                        return $index;
+                                }
+                        }
+                }
+                return -1;
+        }
+	
 	private function get_columns_added($header1, $header2){
 		for($index = 0; $index < count($header2); $index++){
 			if(in_array($header2[$index], $header1)){
@@ -144,11 +155,16 @@ class csv_diff {
 						$d_change = array(
 								$header1[$col_index] => $f_change
 								);
-						$data = array(
+						$existing_index = $this->get_changed_key_row_index($this->rows_changed, $this->csv1_rows[$row_index][$primary_key_index]);
+                                                if($existing_index >= 0){
+                                                        $this->rows_changed[$existing_index]["fields"][$header1[$col_index]] = $f_change;
+                                                }else{
+							$data = array(
 								"fields"=> $d_change,
 								"key"  => array($this->csv1_rows[$row_index][$primary_key_index])
 							     );
-						array_push($this->rows_changed, $data);
+							array_push($this->rows_changed, $data);
+						}
 					}
 				}
 			}
@@ -210,6 +226,15 @@ class csv_diff {
 	}
 
 	public function get_diff($style){
+		/*Reset arrays*/
+                $this->columns_added = array();
+                $this->columns_removed = array();
+                $this->rows_added = array();
+                $this->rows_removed = array();
+                $this->rows_changed = array();
+                $this->csv1_rows = [];
+                $this->csv2_rows = [];
+		
 		$this->style = $style;
 		/*Get the header row from the csv1*/
 		$header1 = $this->get_header($this->csv1);
